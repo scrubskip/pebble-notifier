@@ -21,6 +21,7 @@
         <item>Include ONLY selected apps</item>
     </string-array>
 
+    <string name="menu_filters">Filters</string>
     <string name="menu_uncheck_all">Uncheck All</string>
     <string name="menu_save">Save</string>
     <string name="menu_settings">Settings</string>
@@ -31,5 +32,11 @@
     <string name="pref_notif_screen_on">Notify when screen is on</string>
     <string name="pref_notif_screen_on_summ">If this is set, then notifications will be sent to the Pebble when the phone\'s screen is on.</string>
     <string name="pref_cat_dnd">Do Not Disturb Options</string>
+    <string name="title_activity_filters">Filters</string>
+    <string name="btn_add_filter">Add filter</string>
+    <string name="msg_no_filters">No filters</string>
+    <string name="title_filter_hint">Regex for title text</string>
+    <string name="text_filter_hint">Regex for notification text</string>
+    <string name="btn_delete">Remove</string>
 
 </resources>

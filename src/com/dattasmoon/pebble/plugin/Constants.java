@@ -41,6 +41,7 @@ public final class Constants {
     public static final String  PREFERENCE_MIN_NOTIFICATION_WAIT      = LOG_TAG + ".minNotificationWait";
     public static final String  PREFERENCE_TASKER_SET                 = LOG_TAG + ".taskerSet";
     public static final String  PREFERENCE_NOTIFICATION_EXTRA         = LOG_TAG + ".fetchNotificationExtras";
+    public static final String  PREFERENCE_EXTRA_FILTERS              = LOG_TAG + ".extraFilters";
 
     // Intents
     public static final String  INTENT_SEND_PEBBLE_NOTIFICATION       = "com.getpebble.action.SEND_NOTIFICATION";

@@ -143,6 +143,10 @@ public class EditNotificationActivity extends AbstractPluginActivity {
         case R.id.btnSave:
             finish();
             return true;
+        case R.id.btnFilters:
+            Intent filters = new Intent(this, ExtraFilterList.class);
+            startActivity(filters);
+            return true;
         case R.id.btnDonate:
             Intent i = new Intent(Intent.ACTION_VIEW);
             i.setData(Uri.parse(Constants.DONATION_URL));

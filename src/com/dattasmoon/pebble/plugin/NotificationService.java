@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
@@ -55,16 +56,17 @@ public class NotificationService extends AccessibilityService {
         }
     }
 
-    private Mode     mode                   = Mode.EXCLUDE;
-    private boolean  notifications_only     = false;
-    private boolean  notification_extras    = false;
-    private long     min_notification_wait  = 0 * 1000;
-    private long     notification_last_sent = 0;
-    private String[] packages               = null;
-    private Handler  mHandler;
-    private File     watchFile;
-    private Long     lastChange;
-    Queue<queueItem> queue;
+    private Mode         mode                   = Mode.EXCLUDE;
+    private boolean      notifications_only     = false;
+    private boolean      notification_extras    = false;
+    private long         min_notification_wait  = 0 * 1000;
+    private long         notification_last_sent = 0;
+    private String[]     packages               = null;
+    private List<Filter> extraFilters           = null;
+    private Handler      mHandler;
+    private File         watchFile;
+    private Long         lastChange;
+    Queue<queueItem>     queue;
 
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
@@ -162,7 +164,9 @@ public class NotificationService extends AccessibilityService {
                 }
             }
             if (!found) {
-                Log.i(Constants.LOG_TAG, eventPackageName + " was not found in the include list. Returning.");
+                if (Constants.IS_LOGGABLE) {
+                    Log.i(Constants.LOG_TAG, eventPackageName + " was not found in the include list. Returning.");
+                }
                 return;
             }
             break;
@@ -193,6 +197,18 @@ public class NotificationService extends AccessibilityService {
                     notificationText += "\n" + getExtraData((Notification) parcelable, notificationText.trim());
                 }
 
+            }
+        }
+
+        // Check filters.
+        if (extraFilters != null && extraFilters.size() > 0) {
+            for (Filter filter : extraFilters) {
+                if (Constants.IS_LOGGABLE) {
+                    Log.i(Constants.LOG_TAG, "Checking " + title + " " + notificationText + " against " + filter);
+                }
+                if (filter.isFilterMatch(title, notificationText)) {
+                    return;
+                }
             }
         }
 
@@ -296,6 +312,7 @@ public class NotificationService extends AccessibilityService {
         notifications_only = sharedPreferences.getBoolean(Constants.PREFERENCE_NOTIFICATIONS_ONLY, false);
         min_notification_wait = sharedPreferences.getInt(Constants.PREFERENCE_MIN_NOTIFICATION_WAIT, 0) * 1000;
         notification_extras = sharedPreferences.getBoolean(Constants.PREFERENCE_NOTIFICATION_EXTRA, false);
+        extraFilters = Filter.fromJsonString(sharedPreferences.getString(Constants.PREFERENCE_EXTRA_FILTERS, ""));
         lastChange = watchFile.lastModified();
     }
 
